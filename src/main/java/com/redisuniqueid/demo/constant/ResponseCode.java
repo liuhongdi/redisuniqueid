@@ -7,7 +7,7 @@ public enum ResponseCode {
     SUCCESS(0, "操作成功"),
     ERROR(1, "操作失败"),
     SERVER_ERROR(500, "服务器异常"),
-
+    LUA_ERROR(501, "lua运行异常"),
     // 通用模块 1xxxx
     ILLEGAL_ARGUMENT(10000, "参数不合法"),
     REPETITIVE_OPERATION(10001, "请勿重复操作"),

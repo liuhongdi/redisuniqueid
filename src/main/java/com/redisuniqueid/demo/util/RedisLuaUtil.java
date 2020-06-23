@@ -1,5 +1,9 @@
 package com.redisuniqueid.demo.util;
 
+import com.redisuniqueid.demo.constant.ResponseCode;
+import com.redisuniqueid.demo.exception.ServiceException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -14,6 +18,7 @@ public class RedisLuaUtil {
     @Resource
     private StringRedisTemplate stringRedisTemplate;
 
+    private static final Logger logger = LogManager.getLogger("bussniesslog");
     /*
     run a lua script
     luaFileName: lua file name,no path
@@ -26,7 +31,15 @@ public class RedisLuaUtil {
         redisScript.setResultType(String.class);
 
         String argsone = "none";
-        String result = stringRedisTemplate.execute(redisScript, keyList,argsone);
+        //String result = stringRedisTemplate.execute(redisScript, keyList,argsone);
+        String result = "";
+        try {
+            result = stringRedisTemplate.execute(redisScript, keyList,argsone);
+        } catch (Exception e) {
+            logger.error("发生异常",e);
+            throw new ServiceException(ResponseCode.LUA_ERROR.getMsg());
+        }
+
         return result;
     }
 }
